@@ -5,6 +5,7 @@ import com.clinic.appointment.repository.DoctorRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DoctorService {
@@ -20,9 +21,17 @@ public class DoctorService {
         return doctor;
     }
 
-    public Doctor update(Doctor doctor){
-        doctor = this.doctorRepository.save(doctor);
-        return doctor;
+    public Doctor update(long id, Doctor doctor){
+        Optional<Doctor> updateDoctorOp = this.doctorRepository.findById(id);
+        if(!updateDoctorOp.isEmpty()) {
+            Doctor updateDoctor = updateDoctorOp.get();
+            updateDoctor.setName(doctor.getName());
+            updateDoctor.setPhone(doctor.getPhone());
+            updateDoctor.setAddress(doctor.getAddress());
+            doctor = this.doctorRepository.save(updateDoctor);
+            return doctor;
+        }
+        return null;
     }
 
     public Doctor findById(Long id){
@@ -31,5 +40,12 @@ public class DoctorService {
 
     public List<Doctor> findAll() {
         return this.doctorRepository.findAll();
+    }
+
+    public void destory(Long id) {
+        Optional<Doctor> updateDoctorOp = this.doctorRepository.findById(id);
+        if(!updateDoctorOp.isEmpty()) {
+            this.doctorRepository.delete(updateDoctorOp.get());
+        }
     }
 }

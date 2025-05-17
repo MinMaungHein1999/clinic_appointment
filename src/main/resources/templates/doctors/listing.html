@@ -6,10 +6,10 @@
 </head>
 <body class="container mt-4">
 <h2>Doctors</h2>
-<a class="btn btn-primary mb-3" th:href="@{/doctors/create}">Add Doctor</a>
+<a class="btn btn-primary mb-3" th:href="@{/doctors/new}">Add Doctor</a>
 <table class="table table-bordered">
     <thead>
-    <tr><th>ID</th><th>Name</th><th>Phone</th><th>Actions</th></tr>
+    <tr><th>ID</th><th>Name</th><th>Phone</th><th>Address</th><th>Actions</th></tr>
     </thead>
     <tbody>
     <tr th:each="doc : ${doctors}">

@@ -4,10 +4,7 @@ import com.clinic.appointment.model.Doctor;
 import com.clinic.appointment.service.DoctorService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,8 +31,27 @@ public class DoctorController {
         return "doctors/create";
     }
 
+    @PostMapping("/update/{id}")
+    public String submitUpdate(@PathVariable("id") Long id, @ModelAttribute("doctor")Doctor doctor){
+        this.doctorService.update(id, doctor);
+        return "redirect:/doctors";
+    }
+
+    @GetMapping("/edit/{id}")
+    public String showEditForm(@PathVariable("id") Long id, Model model){
+        Doctor doctor = this.doctorService.findById(id);
+        model.addAttribute("doctor", doctor);
+        return "doctors/edit";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteDoctor(@PathVariable Long id){
+        this.doctorService.destory(id);
+        return "redirect:/doctors";
+    }
+
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute Doctor doctor){
+    public String createDoctor(@ModelAttribute("doctor") Doctor doctor){
         doctorService.create(doctor);
         return "redirect:/doctors";
     }
