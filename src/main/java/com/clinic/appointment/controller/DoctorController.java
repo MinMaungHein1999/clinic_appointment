@@ -2,6 +2,7 @@ package com.clinic.appointment.controller;
 
 import com.clinic.appointment.model.Doctor;
 import com.clinic.appointment.service.DoctorService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class DoctorController {
     private final DoctorService doctorService;
+
     @GetMapping
     public String getDoctors(Model model){
         model.addAttribute("doctors" , doctorService.findAll());

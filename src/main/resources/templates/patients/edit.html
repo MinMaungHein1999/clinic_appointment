@@ -80,6 +80,8 @@
 </head>
 <body>
 <div class="container">
+  <div th:replace="fragments/navbar :: navbar"></div>
+
   <h1>Edit Patient</h1>
 
   <form th:action="@{/patients/update/{id}(id=${patient.id})}" th:object="${patient}" method="post">

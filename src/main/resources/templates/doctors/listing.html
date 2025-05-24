@@ -2,7 +2,9 @@
     <title>Doctors List</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-</head><body class="container mt-4">
+</head>
+<body class="container mt-4">
+<div th:replace="fragments/navbar :: navbar"></div>
 <h2>Doctors</h2><a class="btn btn-primary mb-3" th:href="@{/doctors/new}">Add Doctor</a>
 <table class="table table-bordered">
     <thead>
@@ -16,54 +18,4 @@
         <a class="btn btn-sm btn-warning" th:href="@{'/doctors/edit/' + ${doc.id}}">Edit</a>
         <a class="btn btn-sm btn-danger" th:href="@{'/doctors/delete/' + ${doc.id}}">Delete</a>
     </td>    </tr>    </tbody></table></body></html>
-
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org">-->
-<!--<head>-->
-<!--    <title>Doctors List</title>-->
-<!--    <link rel="stylesheet"-->
-<!--          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">-->
-<!--</head>-->
-<!--<body class="container mt-4">-->
-
-<!--<h2>Doctors</h2>-->
-<!--<a class="btn btn-primary mb-3" th:href="@{/doctors/create}">Add Doctor</a>-->
-
-<!--<table class="table table-bordered">-->
-<!--    <thead>-->
-<!--    <tr>-->
-<!--        <th>ID</th>-->
-<!--        <th>Name</th>-->
-<!--        <th>Phone</th>-->
-<!--        <th>Address</th>-->
-<!--        <th>Actions</th>-->
-<!--    </tr>-->
-<!--    </thead>-->
-<!--    <tbody>-->
-<!--    <tr th:each="doc : ${doctors}">-->
-<!--        <td th:text="${doc.id}"></td>-->
-<!--        <td th:text="${doc.name}"></td>-->
-<!--        <td th:text="${doc.phone}"></td>-->
-<!--        <td th:text="${doc.address}"></td>-->
-<!--        <td>-->
-<!--            &lt;!&ndash; Edit button &ndash;&gt;-->
-<!--            <a class="btn btn-sm btn-warning me-1"-->
-<!--               th:href="@{'/doctors/edit/' + ${doc.id}}">Edit</a>-->
-
-<!--            &lt;!&ndash; Delete button (form with POST) &ndash;&gt;-->
-<!--            <form th:action="@{'/doctors/delete/' + ${doc.id}}" method="post"-->
-<!--                  style="display:inline;">-->
-<!--                <button type="submit"-->
-<!--                        class="btn btn-sm btn-danger"-->
-<!--                        onclick="return confirm('Are you sure you want to delete this doctor?');">-->
-<!--                    Delete-->
-<!--                </button>-->
-<!--            </form>-->
-<!--        </td>-->
-<!--    </tr>-->
-<!--    </tbody>-->
-<!--</table>-->
-
-<!--</body>-->
-<!--</html>-->
 

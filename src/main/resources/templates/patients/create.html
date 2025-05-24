@@ -6,6 +6,7 @@
 </head>
 <body class="container mt-4">
 <h2>Create Patient</h2>
+<div th:replace="fragments/navbar :: navbar"></div>
 
 <form th:action="@{/patients/create}" th:object="${patient}" method="post" class="needs-validation">
   <div class="mb-3">

@@ -1,0 +1,33 @@
+<!-- templates/fragments/navbar.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">Hospital System</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a
+                           class="nav-link"
+                           th:classappend="${requestURI.startsWith('/doctors')} ? 'active'"
+                           th:href="@{/doctors}">Doctors</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${requestURI.startsWith('/patients')} ? 'active'"
+                           th:href="@{/patients}">Patients</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           th:classappend="${requestURI.startsWith('/appointments')} ? 'active'"
+                           th:href="@{/appointments}">Appointments</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+</body>
+</html>
