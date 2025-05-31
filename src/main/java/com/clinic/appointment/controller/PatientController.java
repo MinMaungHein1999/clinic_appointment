@@ -1,5 +1,7 @@
 package com.clinic.appointment.controller;
 
+import com.clinic.appointment.expection.CommonException;
+import com.clinic.appointment.expection.ErrorMessage;
 import com.clinic.appointment.helper.StringUtil;
 import com.clinic.appointment.model.Patient;
 import com.clinic.appointment.service.PatientService;
@@ -34,28 +36,9 @@ public class PatientController {
 
     @PostMapping("/create")
     public String createPatient(@ModelAttribute Patient patient, Model model) {
-
-        boolean hasErrors = false;
-
-        if (StringUtil.isEmpty(patient.getName())) {
-            String errorMsg = "Patient Name can't Emply";
-            model.addAttribute("nameError", errorMsg);
-            hasErrors = true;
-        }
-
-        if (StringUtil.isEmpty(patient.getEmail())) {
-            String errorMsg = "Patient Email can't Emply";
-            model.addAttribute("emailError", errorMsg);
-            hasErrors = true;
-        }
-
-        if(hasErrors){
             model.addAttribute("patient", patient);
-            return "patients/create";
-        }
-
-        patientService.create(patient);
-        return "redirect:/patients";
+            patientService.create(patient);
+            return "redirect:/patients";
     }
 
     @GetMapping("/edit/{id}")
@@ -67,7 +50,8 @@ public class PatientController {
     }
 
     @PostMapping("/update/{id}")
-    public String updatePatient(@PathVariable Long id, @ModelAttribute Patient patient) {
+    public String updatePatient(@PathVariable Long id, @ModelAttribute Patient patient, Model model) {
+        model.addAttribute("patient", patient);
         patient.setId(id);
         patientService.update(patient);
         return "redirect:/patients";
