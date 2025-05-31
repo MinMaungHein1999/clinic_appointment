@@ -12,7 +12,7 @@
   <div class="mb-3">
     <label class="form-label">Name</label>
     <input type="text" th:field="*{name}" class="form-control"/>
-    <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    <div class="text-danger" th:if="${nameError}" th:text="${nameError}"></div>
   </div>
 
   <div class="mb-3">
@@ -24,7 +24,7 @@
   <div class="mb-3">
     <label class="form-label">Email</label>
     <input type="email" th:field="*{email}" class="form-control"/>
-    <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    <div class="text-danger" th:if="${emailError}" th:text="${emailError}"></div>
   </div>
 
   <div class="mb-3">

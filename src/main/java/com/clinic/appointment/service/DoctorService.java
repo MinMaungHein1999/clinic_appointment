@@ -15,6 +15,7 @@ public class DoctorService {
     private final DoctorRepository doctorRepository;
 
     public void create(Doctor doctor){
+
         doctor = this.doctorRepository.save(doctor);
     }
 

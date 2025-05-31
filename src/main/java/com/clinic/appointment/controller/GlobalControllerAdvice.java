@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class GlobalControllerAdvice {
 
     @ModelAttribute("requestURI")
-    public String requestURL(HttpServletRequest request){
-        return request.getRequestURI();
+    public String  requestURL(HttpServletRequest request){
+       return request.getRequestURI();
     }
 }
