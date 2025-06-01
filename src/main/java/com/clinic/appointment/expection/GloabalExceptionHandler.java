@@ -3,25 +3,31 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 @ControllerAdvice
 public class GloabalExceptionHandler {
 
-    @ModelAttribute("requestURI")
-    public String  requestURL(HttpServletRequest request){
-        return request.getRequestURI();
-    }
-
     @ExceptionHandler({
             CommonException.class
     })
-    public String handleErrorMessages(Model model, CommonException ex, HttpServletRequest request){
-        for(ErrorMessage errorMessage : ex.getErrorMessageList()) {
-            model.addAttribute(errorMessage.getFiledName(), errorMessage.getMessage());
+    public ModelAndView handleErrorMessages(CommonException ex, HttpServletRequest request){
+        ModelAndView mav = new ModelAndView(ex.getReturnRoute());
+        Model model = ex.getModel();
+
+        if(model != null) {
+            Map<String, Object> attrs = ex.getModel().asMap();
+            for(Map.Entry<String, Object>  entry : attrs.entrySet()){
+                mav.addObject(entry.getKey(), entry.getValue());
+            }
         }
-        model.addAttribute(ex.getObjectName(), ex.getObject());
-        model.addAttribute("requestURI", request.getRequestURI());
-        return ex.getReturnRoute();
+
+        for(ErrorMessage errorMessage : ex.getErrorMessageList()) {
+            mav.addObject(errorMessage.getFiledName(), errorMessage.getMessage());
+        }
+        mav.addObject("requestURI", request.getRequestURI());
+        return mav;
     }
 }

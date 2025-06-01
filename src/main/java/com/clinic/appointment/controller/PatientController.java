@@ -37,7 +37,7 @@ public class PatientController {
     @PostMapping("/create")
     public String createPatient(@ModelAttribute Patient patient, Model model) {
             model.addAttribute("patient", patient);
-            patientService.create(patient);
+            patientService.create(patient, model);
             return "redirect:/patients";
     }
 
@@ -53,7 +53,7 @@ public class PatientController {
     public String updatePatient(@PathVariable Long id, @ModelAttribute Patient patient, Model model) {
         model.addAttribute("patient", patient);
         patient.setId(id);
-        patientService.update(patient);
+        patientService.update(patient, model);
         return "redirect:/patients";
     }
 
