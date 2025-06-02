@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +57,9 @@ public class PatientService {
 
         validateField(patient.getName(), "nameError", "Patient Name can't be empty", errorMessages);
         validateField(patient.getEmail(), "emailError", "Patient Email can't be empty", errorMessages);
-
         if(!errorMessages.isEmpty()){
             model.addAttribute("patient", patient);
-            throw new CommonException(errorMessages, "patients/edit", model);
+            throw new CommonException(errorMessages, "patients/edit".formatted(patient.getId()), model);
         }
 
         patientRepository.save(patient);

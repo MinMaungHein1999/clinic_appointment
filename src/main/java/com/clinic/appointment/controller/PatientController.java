@@ -4,6 +4,7 @@ import com.clinic.appointment.expection.CommonException;
 import com.clinic.appointment.expection.ErrorMessage;
 import com.clinic.appointment.helper.StringUtil;
 import com.clinic.appointment.model.Patient;
+import com.clinic.appointment.model.PatientType;
 import com.clinic.appointment.service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class PatientController {
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("patient", new Patient());
+        model.addAttribute("patientTypes", PatientType.values());
         return "patients/create";
     }
 
@@ -51,7 +53,6 @@ public class PatientController {
 
     @PostMapping("/update/{id}")
     public String updatePatient(@PathVariable Long id, @ModelAttribute Patient patient, Model model) {
-        model.addAttribute("patient", patient);
         patient.setId(id);
         patientService.update(patient, model);
         return "redirect:/patients";

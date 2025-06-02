@@ -22,6 +22,17 @@
   </div>
 
   <div class="mb-3">
+    <label class="form-label">Patient Type</label>
+    <label>
+      <select th:field="*{type}" class="form-select">
+        <option value="">Select Type</option>
+        <option th:each="t : ${patientTypes}" th:value="${t}" th:text="${t.name()}"></option>
+      </select>
+    </label>
+    <div class="text-danger" th:if="${patientTypeError}" th:text="${patientTypeError}"></div>
+  </div>
+
+  <div class="mb-3">
     <label class="form-label">Email</label>
     <input type="email" th:field="*{email}" class="form-control"/>
     <div class="text-danger" th:if="${emailError}" th:text="${emailError}"></div>
