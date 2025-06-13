@@ -1,7 +1,9 @@
 package com.clinic.appointment.service;
 
+import com.clinic.appointment.dto.DoctorDto;
 import com.clinic.appointment.model.Doctor;
 import com.clinic.appointment.repository.DoctorRepository;
+import com.clinic.appointment.util.AgeCalculator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +38,19 @@ public class DoctorService {
         return this.doctorRepository.findAll();
     }
 
-    public Doctor findById(Long id){
-        return this.doctorRepository.findById(id).orElseThrow();
+    public DoctorDto findById(Long id){
+        Doctor doctor = this.doctorRepository.findById(id).orElseThrow();
+
+        DoctorDto doctorDto = new DoctorDto();
+        int age = AgeCalculator.calculateAge(doctor.getDob());
+
+        doctorDto.setId(doctor.getId());
+        doctorDto.setName(doctor.getName());
+        doctorDto.setAge(age);
+        doctorDto.setPhone(doctor.getPhone());
+        doctorDto.setAddress(doctor.getAddress());
+
+        return doctorDto;
     }
 
     public void deleteById(Long id) {
