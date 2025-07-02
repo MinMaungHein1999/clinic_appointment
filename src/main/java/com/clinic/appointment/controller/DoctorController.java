@@ -1,5 +1,6 @@
 package com.clinic.appointment.controller;
 
+import com.clinic.appointment.dto.DoctorCreateDto;
 import com.clinic.appointment.dto.DoctorDto;
 import com.clinic.appointment.model.Doctor;
 import com.clinic.appointment.service.DoctorService;
@@ -20,15 +21,22 @@ public class DoctorController {
         return "doctors/listing";
     }
 
+    @GetMapping("/profile/{id}")
+    public String getProfile(@PathVariable("id") Long id, Model model){
+        DoctorDto doctor= doctorService.findById(id);
+        model.addAttribute("doctor" , doctor);
+        return "doctors/profile";
+    }
+
     @GetMapping("/new")
     public String showCreateForm(Model model){
-        model.addAttribute("doctor", new Doctor());
+        model.addAttribute("doctor", new DoctorCreateDto());
         return "doctors/create";
     }
 
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute Doctor doctor){
-        doctorService.create(doctor);
+    public String createDoctor(@ModelAttribute DoctorCreateDto createDto){
+        doctorService.create(createDto);
         return "redirect:/doctors";
     }
 

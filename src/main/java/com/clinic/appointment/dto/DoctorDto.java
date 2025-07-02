@@ -10,5 +10,6 @@ public class DoctorDto {
     private int age;
     private String phone;
     private String address;
+    private String profileUrl;
 
 }

@@ -1,7 +1,9 @@
 package com.clinic.appointment.service;
 
+import com.clinic.appointment.dto.DoctorCreateDto;
 import com.clinic.appointment.dto.DoctorDto;
 import com.clinic.appointment.model.Doctor;
+import com.clinic.appointment.model.constant.FileType;
 import com.clinic.appointment.repository.DoctorRepository;
 import com.clinic.appointment.util.AgeCalculator;
 import lombok.AllArgsConstructor;
@@ -14,11 +16,20 @@ import java.util.Optional;
 @AllArgsConstructor
 public class DoctorService {
 
+    private final FileService fileService;
     private final DoctorRepository doctorRepository;
 
-    public void create(Doctor doctor){
+    public void create(DoctorCreateDto createDto){
 
+        Doctor doctor = new Doctor();
+
+        doctor.setName(createDto.getName());
+        doctor.setDob(createDto.getDob());
+        doctor.setAddress(createDto.getAddress());
+        doctor.setPhone(createDto.getPhone());
         doctor = this.doctorRepository.save(doctor);
+
+        fileService.handleFileUpload(createDto.getFile(), FileType.DOCTOR,doctor.getId(), "local" );
     }
 
     public Doctor update(long id,Doctor doctor) {
@@ -42,13 +53,19 @@ public class DoctorService {
         Doctor doctor = this.doctorRepository.findById(id).orElseThrow();
 
         DoctorDto doctorDto = new DoctorDto();
-        int age = AgeCalculator.calculateAge(doctor.getDob());
+        int age = 0;
+        try {
+            age = AgeCalculator.calculateAge(doctor.getDob());
+        }catch (IllegalArgumentException ex){
+
+        }
 
         doctorDto.setId(doctor.getId());
         doctorDto.setName(doctor.getName());
         doctorDto.setAge(age);
         doctorDto.setPhone(doctor.getPhone());
         doctorDto.setAddress(doctor.getAddress());
+        doctorDto.setProfileUrl(this.fileService.getFileName(FileType.DOCTOR, doctor.getId()));
 
         return doctorDto;
     }
