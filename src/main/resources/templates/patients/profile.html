@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Doctor Profile</title>
+</head>
+<body>
+<h2>Patient Profile</h2>
+
+<div>
+    <img th:src="@{${patient.fileUrl}}" alt="Profile Image" width="150"/>
+</div>
+
+<table>
+    <tr>
+        <th>Name:</th>
+        <td th:text="${patient.name}"></td>
+    </tr>
+    <tr>
+        <th>DOB :</th>
+        <td th:text="${patient.dateOfBirth}"></td>
+    </tr>
+    <tr>
+        <th>Email :</th>
+        <td th:text="${patient.email}"></td>
+    </tr>
+    <tr>
+        <th>Address:</th>
+        <td th:text="${patient.address}"></td>
+    </tr>
+</table>
+
+<a th:href="@{'/patients/edit/' + ${patient.id}}">Edit Profile</a>
+
+</body>
+</html>

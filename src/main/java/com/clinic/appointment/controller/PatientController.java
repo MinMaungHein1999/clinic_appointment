@@ -1,5 +1,8 @@
 package com.clinic.appointment.controller;
 
+import com.clinic.appointment.dto.doctor.DoctorDto;
+import com.clinic.appointment.dto.patient.PatientCreateDto;
+import com.clinic.appointment.dto.patient.PatientDto;
 import com.clinic.appointment.expection.CommonException;
 import com.clinic.appointment.expection.ErrorMessage;
 import com.clinic.appointment.helper.StringUtil;
@@ -29,23 +32,30 @@ public class PatientController {
         return "patients/listing";
     }
 
+    @GetMapping("/profile/{id}")
+    public String getProfile(@PathVariable("id") Long id, Model model){
+        PatientDto patientDto= patientService.findById(id);
+        model.addAttribute("patient" , patientDto);
+        return "patients/profile";
+    }
+
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("patient", new Patient());
+        model.addAttribute("patient", new PatientCreateDto());
         model.addAttribute("patientTypes", PatientType.values());
         return "patients/create";
     }
 
     @PostMapping("/create")
-    public String createPatient(@ModelAttribute Patient patient, Model model) {
-            model.addAttribute("patient", patient);
-            patientService.create(patient, model);
+    public String createPatient(@ModelAttribute PatientCreateDto createDto, Model model) {
+            model.addAttribute("patient", createDto);
+            patientService.create(createDto, model);
             return "redirect:/patients";
     }
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
-        Patient patient = patientService.findById(id);
+        PatientDto patient = patientService.findById(id);
         if (patient == null) return "redirect:/patients";
         model.addAttribute("patient", patient);
         return "patients/edit";

@@ -1,5 +1,7 @@
 package com.clinic.appointment.controller;
 
+import com.clinic.appointment.dto.doctor.DoctorCreateDto;
+import com.clinic.appointment.dto.doctor.DoctorDto;
 import com.clinic.appointment.model.Doctor;
 import com.clinic.appointment.service.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +21,22 @@ public class DoctorController {
         return "doctors/listing";
     }
 
+    @GetMapping("/profile/{id}")
+    public String getProfile(@PathVariable("id") Long id, Model model){
+        DoctorDto doctor= doctorService.findById(id);
+        model.addAttribute("doctor" , doctor);
+        return "doctors/profile";
+    }
+
     @GetMapping("/new")
     public String showCreateForm(Model model){
-        model.addAttribute("doctor", new Doctor());
+        model.addAttribute("doctor", new DoctorCreateDto());
         return "doctors/create";
     }
 
     @PostMapping("/create")
-    public String createDoctor(@ModelAttribute Doctor doctor){
-        doctorService.create(doctor);
+    public String createDoctor(@ModelAttribute DoctorCreateDto createDto){
+        doctorService.create(createDto);
         return "redirect:/doctors";
     }
 
@@ -35,12 +44,12 @@ public class DoctorController {
     //when hit edit button in listing.html
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable("id") Long id, Model model) {
-        Doctor doctor = this.doctorService.findById(id);
-        if (doctor == null) {
+        DoctorDto doctorDto = this.doctorService.findById(id);
+        if (doctorDto == null) {
             // handle not found case (optional)
             return "redirect:/doctors";
         }
-        model.addAttribute("doctor", doctor);
+        model.addAttribute("doctor", doctorDto);
         return "doctors/edit"; // This should be your edit form view
     }
 

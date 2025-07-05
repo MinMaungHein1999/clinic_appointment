@@ -8,7 +8,7 @@
 <h2>Create Patient</h2>
 <div th:replace="fragments/navbar :: navbar"></div>
 
-<form th:action="@{/patients/create}" th:object="${patient}" method="post" class="needs-validation">
+<form th:action="@{/patients/create}" th:object="${patient}" method="post" enctype="multipart/form-data" class="needs-validation">
   <div class="mb-3">
     <label class="form-label">Name</label>
     <input type="text" th:field="*{name}" class="form-control"/>
@@ -42,6 +42,11 @@
     <label class="form-label">Address</label>
     <input type="text" th:field="*{address}" class="form-control"/>
     <div class="text-danger" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">File Upload</label>
+    <input type="file" name="file"/>
   </div>
 
   <button type="submit" class="btn btn-primary">Save</button>
