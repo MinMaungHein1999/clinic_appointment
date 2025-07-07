@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Select Role</title>
+</head>
+<body>
+<h2>Select Your Role</h2>
+<p>You have multiple roles. Please choose one to proceed:</p>
+
+<form th:action="@{/set-active-role}" method="post">
+    <div th:each="role : ${roles}">
+        <input type="radio" th:id="${role}" name="selectedRole" th:value="${role}" required/>
+        <label th:for="${role}" th:text="${role.replace('ROLE_', '')}"></label><br/>
+    </div>
+    <br/>
+    <button type="submit">Continue</button>
+</form>
+
+<div th:if="${param.error == 'invalid_selection'}" style="color: red;">
+    Invalid role selection.
+</div>
+</body>
+</html>
