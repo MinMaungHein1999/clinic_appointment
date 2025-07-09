@@ -1,15 +1,10 @@
 package com.clinic.appointment.controller;
 
-import com.clinic.appointment.dto.doctor.DoctorDto;
 import com.clinic.appointment.dto.patient.PatientCreateDto;
 import com.clinic.appointment.dto.patient.PatientDto;
-import com.clinic.appointment.expection.CommonException;
-import com.clinic.appointment.expection.ErrorMessage;
-import com.clinic.appointment.helper.StringUtil;
 import com.clinic.appointment.model.Patient;
 import com.clinic.appointment.model.PatientType;
 import com.clinic.appointment.service.PatientService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +25,12 @@ public class PatientController {
     public String listPatients(Model model) {
         model.addAttribute("patients", patientService.findAll());
         return "patients/listing";
+    }
+
+    @GetMapping("/home")
+    public String doctorDashboard(Model model){
+        model.addAttribute("sideBarTitle", "Patient Home");
+        return "patients/home/index";
     }
 
     @GetMapping("/profile/{id}")

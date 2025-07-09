@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.*;
 public class DoctorController {
     private final DoctorService doctorService;
 
+    @GetMapping("/dashboard")
+    public String doctorDashboard(Model model){
+        model.addAttribute("sideBarTitle", "Doctor Dashboard");
+        return "doctors/dashboard/index";
+    }
+
+
     @GetMapping
     public String getDoctors(Model model){
         model.addAttribute("doctors" , doctorService.findAll());

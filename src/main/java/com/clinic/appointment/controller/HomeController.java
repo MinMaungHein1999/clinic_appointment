@@ -31,12 +31,12 @@ public class HomeController {
 
         if(isValidRole){
             session.setAttribute("activeRole", selectedRole);
-            if("ADMIN".equalsIgnoreCase(selectedRole)){
-                return "redirect:/admin/dashboard";
-            }else if("DOCTOR".equalsIgnoreCase(selectedRole)){
+            if("ROLE_ADMIN".equalsIgnoreCase(selectedRole)){
+                return "redirect:/admins/dashboard";
+            }else if("ROLE_DOCTOR".equalsIgnoreCase(selectedRole)){
                 return "redirect:/doctors/dashboard";
-            }else if("PATIENT".equalsIgnoreCase(selectedRole)){
-                return "redirect:/patients/dashboard";
+            }else if("ROLE_PATIENT".equalsIgnoreCase(selectedRole)){
+                return "redirect:/patients/home";
             }
         }
 
