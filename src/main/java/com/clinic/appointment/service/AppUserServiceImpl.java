@@ -1,5 +1,7 @@
 package com.clinic.appointment.service;
 
+import com.amazonaws.services.kms.model.DisabledException;
+import com.clinic.appointment.expection.AccountNotConfrimedException;
 import com.clinic.appointment.model.AppUser;
 import com.clinic.appointment.model.Role;
 import com.clinic.appointment.repository.AppUserRepository;
@@ -30,8 +32,11 @@ public class AppUserServiceImpl implements UserService{
     private final RoleRepository roleRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = appUserRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User Not fount with username: "+ username));
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        AppUser user = appUserRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User Not fount with email: "+ email));
+        if(!user.isAccountConfirmed()){
+            throw new AccountNotConfrimedException("account-not-confrimed");
+        }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 

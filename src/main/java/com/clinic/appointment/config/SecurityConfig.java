@@ -98,7 +98,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/register", "/confirm-account", "/static/assets/**").permitAll()
+                        .requestMatchers("/register", "/confirm-account/otp**","/confirm-account/verify-otp**", "/static/assets/**").permitAll()
                         .requestMatchers("/select-role", "/set-active-role").authenticated()
                         .requestMatchers("/admins/**").access(createWebExpressionAuthorizationManager("hasRole('ROLE_ADMIN') and @activeRoleService.hasActiveRole('ROLE_ADMIN')", currentExpressionHandler))
                         .requestMatchers("/doctors/**").access(createWebExpressionAuthorizationManager("hasRole('ROLE_DOCTOR') and @activeRoleService.hasActiveRole('ROLE_DOCTOR')", currentExpressionHandler))

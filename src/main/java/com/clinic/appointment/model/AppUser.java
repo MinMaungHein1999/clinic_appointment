@@ -3,6 +3,7 @@ package com.clinic.appointment.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -20,6 +21,13 @@ public class AppUser {
     private String email;
     @Column(nullable = false)
     private String password;
+
+    @Column
+    private LocalDate confirmedAt;
+
+    public boolean isAccountConfirmed(){
+        return confirmedAt!=null;
+    }
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
