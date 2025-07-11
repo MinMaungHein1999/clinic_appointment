@@ -27,4 +27,5 @@ public class Patient extends UserMasterData {
     private String address;
     @Enumerated(EnumType.STRING)
     private PatientType type;
+
 }

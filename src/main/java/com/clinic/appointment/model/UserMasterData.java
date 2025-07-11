@@ -1,7 +1,6 @@
 package com.clinic.appointment.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,4 +20,8 @@ public abstract  class UserMasterData extends MasterData {
     private String email;
     @Column
     private String phone;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_user_id", referencedColumnName = "ID" )
+    private AppUser appUser;
 }

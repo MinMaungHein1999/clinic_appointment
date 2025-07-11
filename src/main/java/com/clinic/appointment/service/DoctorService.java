@@ -15,7 +15,6 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class DoctorService {
-
     private final FileService fileService;
     private final DoctorRepository doctorRepository;
 
