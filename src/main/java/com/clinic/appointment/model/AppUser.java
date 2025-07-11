@@ -1,19 +1,23 @@
 package com.clinic.appointment.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.util.Set;
 
 @Data
 @Entity
+@SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "app_users")
-public class AppUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class AppUser extends MasterData {
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -21,7 +25,6 @@ public class AppUser {
     private String email;
     @Column(nullable = false)
     private String password;
-
     @Column
     private LocalDate confirmedAt;
 

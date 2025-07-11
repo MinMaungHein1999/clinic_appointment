@@ -1,27 +1,24 @@
 package com.clinic.appointment.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import java.time.LocalDate;
 
-@Data
-@Entity
+@MappedSuperclass
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @EqualsAndHashCode(callSuper = true)
-@Table(name = "doctors")
-public class Doctor extends UserMasterData {
+public abstract  class UserMasterData extends MasterData {
     @Column
     private String name;
     @Column
-    private LocalDate dob;
+    private String email;
     @Column
     private String phone;
-    @Column
-    private String address;
 }

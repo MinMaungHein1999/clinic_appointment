@@ -3,7 +3,7 @@ package com.clinic.appointment.controller;
 import com.clinic.appointment.dto.patient.PatientCreateDto;
 import com.clinic.appointment.dto.patient.PatientDto;
 import com.clinic.appointment.model.Patient;
-import com.clinic.appointment.model.PatientType;
+import com.clinic.appointment.model.constant.PatientType;
 import com.clinic.appointment.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

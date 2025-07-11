@@ -2,15 +2,20 @@ package com.clinic.appointment.model;
 
 import com.clinic.appointment.model.constant.FileType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
-@Table
 @Data
 @Entity
-public class FileStorage {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO )
-    private Long id;
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
+@Table(name = "file_storages")
+public class FileStorage extends MasterData {
     private FileType type;
     private Long fileId;
     private String fileName;

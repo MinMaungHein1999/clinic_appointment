@@ -1,6 +1,6 @@
 package com.clinic.appointment.dto.patient;
 
-import com.clinic.appointment.model.PatientType;
+import com.clinic.appointment.model.constant.PatientType;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

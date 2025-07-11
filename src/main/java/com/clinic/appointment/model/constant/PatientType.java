@@ -1,4 +1,4 @@
-package com.clinic.appointment.model;
+package com.clinic.appointment.model.constant;
 
 public enum PatientType {
     IN_PATIENT,
