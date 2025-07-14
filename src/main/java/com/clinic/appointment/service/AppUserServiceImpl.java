@@ -6,6 +6,7 @@ import com.clinic.appointment.model.AppUser;
 import com.clinic.appointment.model.Role;
 import com.clinic.appointment.repository.AppUserRepository;
 import com.clinic.appointment.repository.RoleRepository;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -37,6 +40,9 @@ public class AppUserServiceImpl implements UserService{
         if(!user.isAccountConfirmed()){
             throw new AccountNotConfrimedException("account-not-confrimed");
         }
+        ServletRequestAttributes attr  = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(false);
+        session.setAttribute("currentUser", user);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 

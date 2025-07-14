@@ -20,6 +20,7 @@ public class ActiveRoleService {
 
         if(session != null){
             String activeRole =(String) session.getAttribute("activeRole");
+
             return activeRole != null && activeRole.equalsIgnoreCase(requiredRole);
         }
         return true;

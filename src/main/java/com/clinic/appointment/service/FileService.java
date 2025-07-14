@@ -32,6 +32,9 @@ public class FileService {
 
     public String getFileName(FileType fileType, Long id){
         List<FileStorage> fileStorageList = fileStorageRepository.findByTypeAndFileId(fileType, id);
+        if(fileStorageList.isEmpty()){
+            return null;
+        }
         FileStorage file = fileStorageList.getFirst();
         return getFileUrl(file.getKey(),file.getServiceName());
     }
