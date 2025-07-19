@@ -1,5 +1,6 @@
 package com.clinic.appointment.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,5 +24,6 @@ public abstract  class UserMasterData extends MasterData {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_user_id", referencedColumnName = "ID" )
+    @JsonIgnore
     private AppUser appUser;
 }

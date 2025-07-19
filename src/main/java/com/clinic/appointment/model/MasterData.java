@@ -1,6 +1,7 @@
 package com.clinic.appointment.model;
 
 import com.clinic.appointment.model.constant.Status;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -30,10 +31,12 @@ public abstract  class MasterData {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "crated_by_id", referencedColumnName = "ID" )
+    @JsonIgnore
     private AppUser createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by_id", referencedColumnName = "ID" )
+    @JsonIgnore
     private AppUser updatedBy;
 
 
