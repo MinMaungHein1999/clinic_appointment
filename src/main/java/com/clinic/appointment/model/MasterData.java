@@ -35,4 +35,32 @@ public abstract  class MasterData {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "updated_by_id", referencedColumnName = "ID" )
     private AppUser updatedBy;
+
+
+    public boolean isDeleted(){
+        return this.status == Status.DELETE;
+    }
+
+    public boolean isOwned(Long id){
+        return id != null && this.getCreatedBy() != null && this.getCreatedBy().getId() == id;
+    }
+
+    public boolean isAdmin(){
+        return this instanceof Admin;
+    }
+
+    public boolean isPatient(){
+        return this instanceof Patient;
+    }
+
+    public boolean isDoctor(){
+        return this instanceof Doctor;
+    }
+
+    public boolean isAppUser(){
+        return this instanceof AppUser;
+    }
+    public void delete(){
+        this.status = Status.DELETE;
+    }
 }

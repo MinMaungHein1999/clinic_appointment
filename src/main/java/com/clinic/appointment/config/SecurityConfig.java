@@ -1,6 +1,7 @@
 package com.clinic.appointment.config;
 
 
+import com.clinic.appointment.config.jwt.JwtAuthenticationFilter;
 import com.clinic.appointment.service.ActiveRoleService;
 import com.clinic.appointment.service.CustomAuthenticationFailureHandler;
 import com.clinic.appointment.service.CustomAuthenticationSuccessHandler;
@@ -9,18 +10,25 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultHttpSecurityExpressionHandler;
 import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 
 import jakarta.annotation.PostConstruct;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -33,19 +41,14 @@ public class SecurityConfig {
     private CustomAuthenticationSuccessHandler customAuthenticationSuccessSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
+    @Autowired
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
     @Autowired
     private ActiveRoleService activeRoleService;
 
-    @PostConstruct
-    public void checkActiveRoleServiceInjection() {
-        if (activeRoleService == null) {
-            System.out.println("ALERT: ActiveRoleService was NOT injected! It is null.");
-        } else {
-            boolean result = activeRoleService.hasActiveRole("ROLE_ADMIN");
-            System.out.println("ActiveRoleService Called : " + result);
-            System.out.println("ActiveRoleService was successfully injected.");
-        }
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
+        return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
@@ -83,6 +86,18 @@ public class SecurityConfig {
         return manager;
     }
 
+    @Bean
+    @Order(1)
+    public SecurityFilterChain apiSecurityFilerChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.securityMatcher("/api/v1/**")
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/authenticate").permitAll()
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        return httpSecurity.build();
+    }
+
     /**
      * Configures the security filter chain for HTTP requests.
      * Defines authorization rules, form login, logout, and exception handling.
@@ -91,6 +106,7 @@ public class SecurityConfig {
      * @throws Exception If an error occurs during configuration.
      */
     @Bean
+    @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         // Spring will automatically inject the `httpSecurityExpressionHandler` bean
         // into this method because it's available in the context.
