@@ -17,8 +17,6 @@ import java.time.LocalDate;
 @Table(name = "doctors")
 public class Doctor extends UserMasterData {
     @Column
-    private String name;
-    @Column
     private LocalDate dob;
     @Column
     private String phone;

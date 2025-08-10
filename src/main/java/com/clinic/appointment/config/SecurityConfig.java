@@ -2,10 +2,15 @@ package com.clinic.appointment.config;
 
 
 import com.clinic.appointment.config.jwt.JwtAuthenticationFilter;
+import com.clinic.appointment.expection.RestApiException;
 import com.clinic.appointment.service.ActiveRoleService;
 import com.clinic.appointment.service.CustomAuthenticationFailureHandler;
 import com.clinic.appointment.service.CustomAuthenticationSuccessHandler;
 import com.clinic.appointment.service.UserService;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -25,6 +30,13 @@ import org.springframework.security.web.access.expression.WebExpressionAuthoriza
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AndRequestMatcher;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.logging.Filter;
 
 @Configuration
 @EnableWebSecurity
@@ -50,6 +62,7 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception{
         return authenticationConfiguration.getAuthenticationManager();
     }
+
 
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
@@ -89,30 +102,23 @@ public class SecurityConfig {
     @Bean
     @Order(1)
     public SecurityFilterChain apiSecurityFilerChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.securityMatcher("/api/v1/**")
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/authenticate").permitAll()
-                        .anyRequest().authenticated())
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        return httpSecurity.build();
+            httpSecurity.securityMatcher("/api/v1/**")
+                    .csrf(csrf -> csrf.disable())
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/authenticate").permitAll()
+                            .anyRequest().authenticated())
+                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            return httpSecurity.build();
     }
 
-    /**
-     * Configures the security filter chain for HTTP requests.
-     * Defines authorization rules, form login, logout, and exception handling.
-     * @param http The HttpSecurity object to configure.
-     * @return The built SecurityFilterChain.
-     * @throws Exception If an error occurs during configuration.
-     */
+
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Spring will automatically inject the `httpSecurityExpressionHandler` bean
-        // into this method because it's available in the context.
-        DefaultHttpSecurityExpressionHandler currentExpressionHandler = httpSecurityExpressionHandler(); // Call the @Bean method directly
+        DefaultHttpSecurityExpressionHandler currentExpressionHandler = httpSecurityExpressionHandler();
 
         http
+                .securityMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher("/api/v1/**")))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/register", "/confirm-account/otp**","/confirm-account/verify-otp**", "/static/assets/**").permitAll()
                         .requestMatchers("/select-role", "/set-active-role").authenticated()

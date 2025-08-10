@@ -21,7 +21,7 @@ public abstract  class MasterData {
     private Long id;
 
     @Column
-    private Status status;
+    private Status status = Status.ACTIVE;
 
     @Column
     private LocalDateTime updatedAt;
@@ -39,30 +39,37 @@ public abstract  class MasterData {
     @JsonIgnore
     private AppUser updatedBy;
 
-
+    @JsonIgnore
     public boolean isDeleted(){
         return this.status == Status.DELETE;
     }
 
+    @JsonIgnore
     public boolean isOwned(Long id){
         return id != null && this.getCreatedBy() != null && this.getCreatedBy().getId() == id;
     }
 
+    @JsonIgnore
     public boolean isAdmin(){
         return this instanceof Admin;
     }
 
+    @JsonIgnore
     public boolean isPatient(){
         return this instanceof Patient;
     }
 
+    @JsonIgnore
     public boolean isDoctor(){
         return this instanceof Doctor;
     }
 
+    @JsonIgnore
     public boolean isAppUser(){
         return this instanceof AppUser;
     }
+
+    @JsonIgnore
     public void delete(){
         this.status = Status.DELETE;
     }
